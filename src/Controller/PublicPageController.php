@@ -44,4 +44,6 @@ class PublicPageController extends AbstractController
         ];
         return $this->render($template, $args);
     }
+
+
 }
