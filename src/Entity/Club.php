@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClubRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,74 +19,70 @@ class Club
      */
     private $id;
 
+
+
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ClubName;
+    private $club_name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="club")
      */
-    private $member;
+    private $users;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Book::class, mappedBy="ClubName", cascade={"persist", "remove"})
-     */
-    private $u;
-
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
+
     public function getClubName(): ?string
     {
-        return $this->ClubName;
+        return $this->club_name;
     }
 
-    public function setClubName(string $ClubName): self
+    public function setClubName(string $club_name): self
     {
-        $this->ClubName = $ClubName;
+        $this->club_name = $club_name;
 
         return $this;
     }
 
-    public function getMember(): ?int
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
     {
-        return $this->member;
+        return $this->users;
     }
 
-    public function setMember(int $member): self
+    public function addUser(User $user): self
     {
-        $this->member = $member;
-
-        return $this;
-    }
-
-    public function getU(): ?Book
-    {
-        return $this->u;
-    }
-
-    public function setU(?Book $u): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($u === null && $this->u !== null) {
-            $this->u->setClubName(null);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setClub($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($u !== null && $u->getClubName() !== $this) {
-            $u->setClubName($this);
-        }
-
-        $this->u = $u;
-
         return $this;
     }
 
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getClub() === $this) {
+                $user->setClub(null);
+            }
+        }
 
+        return $this;
+    }
 
 
 }

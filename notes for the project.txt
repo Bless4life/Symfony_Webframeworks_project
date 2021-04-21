@@ -1,0 +1,109 @@
+use Faker\Factory;
+
+for the BookFixtures 
+ public function load(ObjectManager $manager)
+    {
+        // $product = new Product();
+        // $manager->persist($product);
+
+           $faker = Factory::create();
+        $no_Of_Books = 12;
+
+        for ($i=0; $i < $no_Of_Books; $i++) {
+            $title = $faker -> streetName;
+            $author = $faker -> name;
+            $numBooks = $faker -> biasedNumberBetween(0,12);
+
+
+            $book = new book();
+            $book -> setTitle($title);
+            $book -> setAuthor($author);
+            $book -> setNumBooks($numBooks);
+
+
+            $manager -> persist($book);
+        }
+        $manager -> flush();
+    }
+
+for ClubFixtures
+public function load(ObjectManager $manager)
+    {
+        // $product = new Product();
+        // $manager->persist($product);
+
+        $faker = Factory::create();
+        $numClub = 5;
+
+        for ($i=0; $i < $numClub; $i++) {
+            $ClubName = $faker -> streetName;
+            $member = $faker -> numberBetween();
+
+            $club = new Club();
+            $club -> setClubName($ClubName);
+            $club -> setMember($member);
+
+            $manager -> persist($club);
+
+        }
+        $manager->flush();
+    }
+
+BookType and ClubType were there aS WELL - Form folder
+also deleted the crud
+and the controller BookController and ClubController
+
+ 'books' => $bookRepository->findByTitleOrder(),
+
+public function load(ObjectManager $manager)
+    {
+        // $product = new Product();
+        // $manager->persist($product);
+
+        $b1 = new Book();
+        $b1->setTitle('Consider the Lilies');
+        $b1->setAuthor('Iain Crichton Smith');
+        $b1->setNumBooks(12);
+
+        $manager->persist($b1);
+
+        $manager->flush();
+    }
+
+bookr eppoosityory
+
+// /**
+    //  * @return Book[] Returns an array of Book objects
+    //  */
+
+    public function findByTitleOrder()
+    {
+        return $this->createQueryBuilder('b')
+
+            ->orderBy('b.title', 'ASC')
+
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByAuthorOrder()
+    {
+        return $this->createQueryBuilder('b')
+
+            ->orderBy('b.author', 'ASC')
+
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findByClubNameOrder()
+    {
+        return $this->createQueryBuilder('b')
+
+            ->orderBy('b.clubName', 'ASC')
+
+            ->getQuery()
+            ->getResult()
+            ;
+    }

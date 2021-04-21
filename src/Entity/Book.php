@@ -28,9 +28,15 @@ class Book
     private $author;
 
     /**
-     * @ORM\OneToOne(targetEntity=Club::class, inversedBy="u", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="books")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $ClubName;
+    private $user;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numBooks;
 
     public function getId(): ?int
     {
@@ -61,15 +67,29 @@ class Book
         return $this;
     }
 
-    public function getClubName(): ?Club
+    public function getUser(): ?User
     {
-        return $this->ClubName;
+        return $this->user;
     }
 
-    public function setClubName(?Club $ClubName): self
+    public function setUser(?User $user): self
     {
-        $this->ClubName = $ClubName;
+        $this->user = $user;
 
         return $this;
     }
+
+    public function getNumBooks(): ?int
+    {
+        return $this->numBooks;
+    }
+
+    public function setNumBooks(int $numBooks): self
+    {
+        $this->$numBooks = $numBooks;
+
+        return $this;
+    }
+
+
 }

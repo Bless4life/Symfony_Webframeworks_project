@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -34,6 +36,24 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $role;
+
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="user")
+     */
+    private $books;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Club::class, inversedBy="users")
+     */
+    private $club;
+
+    public function __construct()
+    {
+        $this->clubs = new ArrayCollection();
+        $this->books = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -116,5 +136,53 @@ class User implements UserInterface
         $this->role = $role;
 
         return $this;
+    }
+
+
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getUser() === $this) {
+                $book->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getClub(): ?Club
+    {
+        return $this->club;
+    }
+
+    public function setClub(?Club $club): self
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return (string) $this->club;
     }
 }

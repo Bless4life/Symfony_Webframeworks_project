@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Club;
-use App\Form\ClubType;
+use App\Form\Club1Type;
 use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +20,9 @@ class ClubController extends AbstractController
      */
     public function index(ClubRepository $clubRepository): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('club/index.html.twig', [
             'clubs' => $clubRepository->findAll(),
         ]);
@@ -31,7 +34,7 @@ class ClubController extends AbstractController
     public function new(Request $request): Response
     {
         $club = new Club();
-        $form = $this->createForm(ClubType::class, $club);
+        $form = $this->createForm(Club1Type::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +66,7 @@ class ClubController extends AbstractController
      */
     public function edit(Request $request, Club $club): Response
     {
-        $form = $this->createForm(ClubType::class, $club);
+        $form = $this->createForm(Club1Type::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,4 +94,5 @@ class ClubController extends AbstractController
 
         return $this->redirectToRoute('club_index');
     }
+
 }

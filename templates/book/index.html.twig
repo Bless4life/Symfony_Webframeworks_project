@@ -11,28 +11,36 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Author</th>
+                <th>NumBooks</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for book in books %}
+            {% if is_granted('ROLE_USER') %}
             <tr>
                 <td>{{ book.id }}</td>
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
-                <td>{{ book.Club.ClubName }}</td>
+                <td>{{ book.numBooks }}</td>
                 <td>
                     <a href="{{ path('book_show', {'id': book.id}) }}">show</a>
+            {% endif%}
+
+            {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+            {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('book_new') }}">Create new</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('book_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}
