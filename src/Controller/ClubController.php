@@ -113,22 +113,16 @@ class ClubController extends AbstractController
     /**
      * @Route("/{id}", name="club_join", methods={"JOIN"})
      */
-    public function join(Request $request, Club $club,  CommentRepository $commentRepository, NotifierInterface $notifier): Response
+    public function join(Request $request, Club $club, NotifierInterface $notifier): Response
     {
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $comment = new Comment();
-        $this->bus->dispatch(new CommentMessage($comment->getId(), $context));
+        return $this->render('club/join', [
+            'club' => $club,
 
-        $form = $this->createForm(CommentType::class, $comment);
-
-        $notifier->send(new Notification('Thank you for requesting to join, your request will be accepted after moderation.', ['browser']));
-
-        if ($form->isSubmitted()) {
-           $notifier->send(new Notification('Can you check your submission? There are some problems with it.', ['browser']));
-        }
-        return $this->redirectToRoute('club_index');
+        ]);
+        //return $this->redirectToRoute('club_index');
     }
 
 
