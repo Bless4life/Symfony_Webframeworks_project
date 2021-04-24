@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Club;
+use App\Entity\Comment;
 use App\Form\ClubType;
+use App\Form\CommentFormType;
 use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +67,7 @@ class ClubController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
 
+
         return $this->render('club/show.html.twig', [
             'club' => $club,
         ]);
@@ -113,15 +116,20 @@ class ClubController extends AbstractController
     /**
      * @Route("/{id}", name="club_join", methods={"JOIN"})
      */
-    public function join(Request $request, Club $club, NotifierInterface $notifier): Response
+    public function join(Request $request, Club $club): Response
     {
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->render('club/join', [
-            'club' => $club,
+
+        $form = $this->createForm(CommentFormType::class);
+
+        return $this->render('club/show.html.twig', [
+            //'our_form' => $form,
+            'our_form' => $form->createView(),
 
         ]);
+
         //return $this->redirectToRoute('club_index');
     }
 

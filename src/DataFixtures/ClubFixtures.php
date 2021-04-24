@@ -22,6 +22,11 @@ class ClubFixtures extends Fixture
         $club = new Club();
         $comment1->setClub($club);
 
+        $club->addComment($comment1);
+        $club->setName($club);
+
+
+
         $manager->persist($comment1);
         $manager->persist($club);
         $manager->flush();
