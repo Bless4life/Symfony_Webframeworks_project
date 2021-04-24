@@ -22,18 +22,27 @@ class Club
 
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $club_name;
-
-    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="club")
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="club_name")
+     */
+    private $books;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->books = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -41,18 +50,6 @@ class Club
         return $this->id;
     }
 
-
-    public function getClubName(): ?string
-    {
-        return $this->club_name;
-    }
-
-    public function setClubName(string $club_name): self
-    {
-        $this->club_name = $club_name;
-
-        return $this;
-    }
 
     /**
      * @return Collection|User[]
@@ -80,6 +77,54 @@ class Club
                 $user->setClub(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setClubName($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getClubName() === $this) {
+                $book->setClubName(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -70,6 +70,9 @@ public function load(ObjectManager $manager)
         $manager->flush();
     }
 
+// usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 bookr eppoosityory
 
 // /**

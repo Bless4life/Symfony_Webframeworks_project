@@ -12,9 +12,8 @@ class ClubType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('club_name')
-            ->add('user')
-            ->add('numBooks')
+            ->add('name')
+            ->add('users')
         ;
     }
 

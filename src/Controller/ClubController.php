@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Club;
-use App\Form\Club1Type;
+use App\Form\ClubType;
 use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,8 +33,11 @@ class ClubController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $club = new Club();
-        $form = $this->createForm(Club1Type::class, $club);
+        $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,6 +59,9 @@ class ClubController extends AbstractController
      */
     public function show(Club $club): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('club/show.html.twig', [
             'club' => $club,
         ]);
@@ -66,7 +72,10 @@ class ClubController extends AbstractController
      */
     public function edit(Request $request, Club $club): Response
     {
-        $form = $this->createForm(Club1Type::class, $club);
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,6 +95,9 @@ class ClubController extends AbstractController
      */
     public function delete(Request $request, Club $club): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($club);
@@ -94,5 +106,19 @@ class ClubController extends AbstractController
 
         return $this->redirectToRoute('club_index');
     }
+
+    /**
+     * @Route("/{id}", name="club_join", methods={"JOIN"})
+     */
+    public function join(Request $request, Club $club): Response
+    {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+            return $this->redirectToRoute('club_index');
+    }
+
+
+
 
 }

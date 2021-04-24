@@ -34,9 +34,10 @@ class Book
     private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Club::class, inversedBy="books")
      */
-    private $numBooks;
+    private $club_name;
+
 
     public function getId(): ?int
     {
@@ -79,17 +80,25 @@ class Book
         return $this;
     }
 
-    public function getNumBooks(): ?int
+    public function getClubName(): ?Club
     {
-        return $this->numBooks;
+        return $this->club_name;
     }
 
-    public function setNumBooks(int $numBooks): self
+    public function setClubName(?Club $club_name): self
     {
-        $this->$numBooks = $numBooks;
+        $this->club_name = $club_name;
 
         return $this;
     }
+
+
+    public function __toString()
+    {
+        return $this->club_name;
+
+    }
+
 
 
 }

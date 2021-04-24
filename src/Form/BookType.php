@@ -14,9 +14,8 @@ class BookType extends AbstractType
         $builder
             ->add('title')
             ->add('author')
-            ->add('numBooks')
             ->add('user')
-
+            ->add('club_name')
         ;
     }
 

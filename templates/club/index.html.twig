@@ -1,34 +1,29 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Club index{% endblock %}
 
 {% block body %}
-    <h1>Club index</h1>
+    <h1>List of Clubs</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Club_name</th>
+                <th>Name</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for club in clubs %}
-            {% if is_granted('ROLE_USER') %}
             <tr>
-
                 <td>{{ club.id }}</td>
-                <td>{{ club.clubName }}</td>
+                <td>{{ club.name }}</td>
                 <td>
-
-                    <a href="{{ path('club_show', {'id': club.id}) }}">show</a>
-                {% endif%}
-
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('club_edit', {'id': club.id}) }}">edit</a>
-                {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('club_show', {'id': club.id}) }}">show</a>
+                        <a href="{{ path('club_edit', {'id': club.id}) }}">edit</a>
+                    {% endif %}
+                    <a href="{{ path('club_join', {'id': club.id}) }}">Join</a>
                 </td>
             </tr>
         {% else %}
@@ -42,4 +37,5 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('club_new') }}">Create new</a>
     {% endif %}
+
 {% endblock %}

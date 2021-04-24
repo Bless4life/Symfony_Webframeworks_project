@@ -183,6 +183,6 @@ class User implements UserInterface
     }
     public function __toString(): string
     {
-        return (string) $this->club;
+        return (string) $this->email;
     }
 }
