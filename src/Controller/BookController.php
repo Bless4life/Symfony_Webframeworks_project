@@ -20,6 +20,9 @@ class BookController extends AbstractController
      */
     public function index(BookRepository $bookRepository): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('book/index.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);
@@ -30,6 +33,9 @@ class BookController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -53,6 +59,10 @@ class BookController extends AbstractController
      */
     public function show(Book $book): Response
     {
+
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);
@@ -63,6 +73,9 @@ class BookController extends AbstractController
      */
     public function edit(Request $request, Book $book): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
@@ -83,6 +96,9 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book): Response
     {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($book);

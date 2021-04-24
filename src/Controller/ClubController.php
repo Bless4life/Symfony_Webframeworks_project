@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 
 /**
  * @Route("/club")
@@ -62,6 +64,7 @@ class ClubController extends AbstractController
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+
         return $this->render('club/show.html.twig', [
             'club' => $club,
         ]);
@@ -110,12 +113,22 @@ class ClubController extends AbstractController
     /**
      * @Route("/{id}", name="club_join", methods={"JOIN"})
      */
-    public function join(Request $request, Club $club): Response
+    public function join(Request $request, Club $club,  CommentRepository $commentRepository, NotifierInterface $notifier): Response
     {
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-            return $this->redirectToRoute('club_index');
+        $comment = new Comment();
+        $this->bus->dispatch(new CommentMessage($comment->getId(), $context));
+
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $notifier->send(new Notification('Thank you for requesting to join, your request will be accepted after moderation.', ['browser']));
+
+        if ($form->isSubmitted()) {
+           $notifier->send(new Notification('Can you check your submission? There are some problems with it.', ['browser']));
+        }
+        return $this->redirectToRoute('club_index');
     }
 
 

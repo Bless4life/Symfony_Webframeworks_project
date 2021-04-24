@@ -1,23 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+
+    {% block title %}List of books{% endblock %}
 
 {% block body %}
-    <h1>Summary of the books</h1>
+    {% if is_granted('ROLE_USER') %}
+        <h1>Summary of the books</h1>
+    {% endif %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Member</th>
-                <th>Club name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    {% if is_granted('ROLE_USER') %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Member</th>
+                    <th>Club name</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% endif %}
         {% for book in books %}
+            {% if is_granted('ROLE_USER') %}
             <tr>
                 <td>{{ book.id }}</td>
                 <td>{{ book.title }}</td>
@@ -27,7 +33,7 @@
 
                 <td>
                     <a href="{{ path('book_show', {'id': book.id}) }}">show</a>
-
+                {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
                     {% endif %}
@@ -41,5 +47,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('book_new') }}">Create new</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('book_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}
