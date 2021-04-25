@@ -1,6 +1,9 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Club{% endblock %}
+
+{% block title %}Club {% endblock %}
+
 
 {% block body %}
     <h1>Club</h1>
@@ -10,8 +13,10 @@
     <table class="table">
         <tbody>
             <tr>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Id</th>
                 <td>{{ club.id }}</td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Name</th>
@@ -54,14 +59,47 @@
                 <label for="comment_form_Club">Club</label>
                 <input type="text" id="comment_form_Club" name="comment_form[club]" required="required" />
             </div>
+            <br>
             <div>
-                <input type="submit" value="submit">
+                <button type="submit"  class="btn btn-info">Submit</button>
             </div>
 
             <input type="hidden" id="comment_form__token" name="comment_form[_token]" value="DwqsEanxc48jofxsqbGBVLQBqlVJ_Tg4u9-BL1Hjgac" />
         </div>
     </form>
+<hr>
 
+    {% if is_granted('ROLE_USER') %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Comment your thoughts</h3>
+                <img class="comment-img rounded-circle" src="{{ asset('images/male_icon.jpg') }}">
+                    <span class="commenter-name">User</span>
+                    <div class="form-group">
+                        <textarea class="form-control comment-form" id="articleText" rows="1" ></textarea>
+                    </div>
+                <button type="submit" class="btn btn-info">Comment</button>
+            </div>
+        </div>
+    {% endif %}
+    <hr>
+
+    {% for comment in club.comments %}
+        <div class="row">
+            <div class="col-sm-12">
+
+
+                <div class="comment-container d-inline-block pl-3 align-top">
+                    <img class="comment-img rounded-circle" src="{{ asset('images/male_icon.jpg') }}">
+                    <span class="commenter-name">{{ comment.authorName }}</span>
+                    <br>
+
+                    <span class="comment"> {{ comment.content }}</span>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
     {% if is_granted('ROLE_ADMIN') %}
         {{ include('club/_delete_form.html.twig') }}

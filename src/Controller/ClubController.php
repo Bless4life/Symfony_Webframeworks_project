@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/club")
+ * @IsGranted("ROLE_USER")
  */
 class ClubController extends AbstractController
 {
@@ -121,16 +123,30 @@ class ClubController extends AbstractController
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        return $this->redirectToRoute('club_index');
+    }
+
+    /**
+     * @Route("/{id}/submit", name="club_submit", methods={"GET"})
+     *
+     */
+    public function submit(Request $request, Club $club): Response
+    {
+        // usually you'll want to make sure the user is authenticated first
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 
         $form = $this->createForm(CommentFormType::class);
 
-        return $this->render('club/show.html.twig', [
+        $form->get('submit')->isSubmitted();
+
+        return $this->render('club/join', [
             //'our_form' => $form,
             'our_form' => $form->createView(),
 
         ]);
 
-        //return $this->redirectToRoute('club_index');
+       // return $this->redirectToRoute('club_index');
     }
 
 

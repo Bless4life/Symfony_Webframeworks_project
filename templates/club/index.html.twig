@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Club index{% endblock %}
+{% block title %}Join a club{% endblock %}
 
 {% block body %}
-    <h1>List of Clubs</h1>
+    <h1>Here are the list of Clubs, feel free to join any!</h1>
 
     <table class="table">
         <thead>
             <tr>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Id</th>
+                {% endif %}
                 <th>Name</th>
                 <th>actions</th>
             </tr>
@@ -16,7 +18,9 @@
         <tbody>
         {% for club in clubs %}
             <tr>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td>{{ club.id }}</td>
+                {% endif %}
                 <td>{{ club.name }}</td>
                 <td>
                     {% if is_granted('ROLE_ADMIN') %}

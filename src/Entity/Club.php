@@ -116,10 +116,7 @@ class Club
     }
 
 
-    public function __toString(): string
-    {
-        return $this->id;
-    }
+
 
     public function getName(): ?string
     {
@@ -162,7 +159,8 @@ class Club
 
         return $this;
     }
-
-
-
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
 }

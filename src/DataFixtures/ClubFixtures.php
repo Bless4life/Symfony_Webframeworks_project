@@ -17,14 +17,14 @@ class ClubFixtures extends Fixture
         // $manager->persist($product);
 
         $comment1 = new Comment();
-        $comment1->setAuthorName('Lani peters');
+        $comment1->setAuthorName('User');
         $comment1->setContent('i suggest reading "Cold world" by "Peter Andrews". it is a really good book. ');
         $club = new Club();
+        $club->setName('Happy Club');
         $comment1->setClub($club);
 
         $club->addComment($comment1);
         $club->setName($club);
-
 
 
         $manager->persist($comment1);

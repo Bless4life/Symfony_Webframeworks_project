@@ -93,9 +93,9 @@ class Book
     }
 
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->club_name;
+        return (string) $this->club_name;
 
     }
 

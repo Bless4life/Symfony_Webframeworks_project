@@ -41,12 +41,6 @@
                 display: inline-block;
             }
 
-            .container {
-                border-radius: 5px;
-
-                padding: 20px;
-            }
-
             .img-thumbnail{
                 border: 1px;
             }
@@ -55,6 +49,26 @@
                 border: 0.1rem solid black;
                 padding: 0.2rem;
             }
+            .comment-img {
+                width: 30px;
+                height: auto;
+                border: 1px solid darkgray;
+            }
+            .commenter-name {
+                font-weight: bold;
+            }
+
+
+            .comment-form {
+                min-width: 500px;
+            }
+
+            @media (max-width: 767px) {
+                .comment-form {
+                    min-width: 260px;
+                }
+            }
+
 
         </style>
 

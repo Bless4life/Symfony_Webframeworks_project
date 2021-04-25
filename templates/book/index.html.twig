@@ -12,12 +12,18 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th>Id</th>
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
                     <th>Title</th>
                     <th>Author</th>
+
                     <th>Member</th>
                     <th>Club name</th>
+
                     <th>actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +31,9 @@
         {% for book in books %}
             {% if is_granted('ROLE_USER') %}
             <tr>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td>{{ book.id }}</td>
+                {% endif %}
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
                 <td>{{ book.user }}</td>
