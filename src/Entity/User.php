@@ -49,10 +49,16 @@ class User implements UserInterface
      */
     private $club;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SuggestBook::class, mappedBy="users")
+     */
+    private $suggestBooks;
+
     public function __construct()
     {
         $this->clubs = new ArrayCollection();
         $this->books = new ArrayCollection();
+        $this->suggestBooks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,5 +190,35 @@ class User implements UserInterface
     public function __toString(): string
     {
         return (string) $this->email;
+    }
+
+    /**
+     * @return Collection|SuggestBook[]
+     */
+    public function getSuggestBooks(): Collection
+    {
+        return $this->suggestBooks;
+    }
+
+    public function addSuggestBook(SuggestBook $suggestBook): self
+    {
+        if (!$this->suggestBooks->contains($suggestBook)) {
+            $this->suggestBooks[] = $suggestBook;
+            $suggestBook->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuggestBook(SuggestBook $suggestBook): self
+    {
+        if ($this->suggestBooks->removeElement($suggestBook)) {
+            // set the owning side to null (unless already changed)
+            if ($suggestBook->getUsers() === $this) {
+                $suggestBook->setUsers(null);
+            }
+        }
+
+        return $this;
     }
 }

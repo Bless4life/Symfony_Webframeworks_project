@@ -41,11 +41,20 @@
     {% endif %}
 
     <hr>
-    <div>No Suggestion for a book yet.</div>
+
 
     <h2>Suggest a book for the year</h2>
 
+    <label for="BookName">Book Name</label>
+    <input type="text"class="form-control" required autofocus>
+    <label>Why you want this book?</label>
+    <input name="text" class="form-control" required>
 
+    <br>
+    <button type="submit" onclick="alert('Thank you for your suggestion')" class="btn btn-info">Submit</button>
+
+
+<!--
     <form name="comment_form" method="post" enctype="multipart/form-data">
         <div id="comment_form">
             <div >
@@ -72,7 +81,10 @@
             <input type="hidden" id="comment_form__token" name="comment_form[_token]" value="DwqsEanxc48jofxsqbGBVLQBqlVJ_Tg4u9-BL1Hjgac" />
         </div>
     </form>
-<hr>
+    -->
+
+
+    <hr>
 
     {% if is_granted('ROLE_USER') %}
         <div class="row">

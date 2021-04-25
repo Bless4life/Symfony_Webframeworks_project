@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Club;
 use App\Entity\Comment;
+use App\Entity\SuggestBook;
 use App\Form\ClubType;
 use App\Form\CommentFormType;
+use App\Form\SuggestFormType;
 use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Twig\Environment;
 
 /**
  * @Route("/club")
@@ -127,29 +130,20 @@ class ClubController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/submit", name="club_submit", methods={"GET"})
-     *
+     * @Route("/{id}/suggest", name="club_suggest", methods={"GET"})
      */
-    public function submit(Request $request, Club $club): Response
+    public function submit(Environment $twig): Response
     {
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $suggest_book = new SuggestBook();
 
-        $form = $this->createForm(CommentFormType::class);
+        $form = $this->createForm(SuggestFormType::class, $suggest_book);
 
-        $form->get('submit')->isSubmitted();
-
-        return $this->render('club/join', [
-            //'our_form' => $form,
-            'our_form' => $form->createView(),
-
+        return $this->render('club/show.html.twig', [
+            'suggest_form' => $form->createView()
         ]);
-
-       // return $this->redirectToRoute('club_index');
     }
-
-
-
 
 }
