@@ -24,8 +24,15 @@
             </tr>
             <tr>
                 <th>Members</th>
-                <td>{{ club.id }}</td>
+                <td>
+                    <a href="{{ path('book_show', {'id': club.id}) }}">{{ club.id }}</a>
+                </td>
             </tr>
+            <tr>
+                <th>Book Name</th>
+                <td><a href="{{ path('book_index', {'id': club.id}) }}">Pride and justice</a></td>
+            </tr>
+
         </tbody>
     </table>
 
@@ -73,7 +80,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <h3>Comment your thoughts</h3>
-                <img class="comment-img rounded-circle" src="{{ asset('images/male_icon.jpg') }}">
+                <img class="comment-img rounded-circle" src="{{ asset('images/Female_icon.jpg') }}">
                     <span class="commenter-name">User</span>
                     <div class="form-group">
                         <textarea class="form-control comment-form" id="articleText" rows="1" ></textarea>
@@ -90,7 +97,7 @@
 
 
                 <div class="comment-container d-inline-block pl-3 align-top">
-                    <img class="comment-img rounded-circle" src="{{ asset('images/male_icon.jpg') }}">
+                    <img class="comment-img rounded-circle" src="{{ asset('images/Female_icon.jpg') }}">
                     <span class="commenter-name">{{ comment.authorName }}</span>
                     <br>
 
